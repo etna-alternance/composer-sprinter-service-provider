@@ -1,0 +1,40 @@
+{
+    "name": "etna/sprinter-service-provider",
+    "description": "SPrinter Service Provider",
+    "keywords": ["sprinter", "rabbitmq", "silex"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "ETNA",
+            "email": "dev@etna-alternance.net",
+            "homepage": "http://etna-alternance.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "silex/silex": "1.*@dev",
+        "etna/rabbitmq-service-provider": "0.x"
+    },
+    "require-dev": {
+        "behat/behat": "2.x@stable"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "ETNA\\Silex\\Provider\\SPrinter": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "repositories": [
+       {
+           "type": "composer",
+           "url": "http://composer.etna-alternance.net"
+       }
+   ]
+}
