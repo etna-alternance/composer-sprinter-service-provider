@@ -22,9 +22,9 @@ class SPrinter
     {
         $this->exchange->send(
             [
-                $template,
-                $data,
-                $print_flag
+                "template"   => $template,
+                "data"       => $data,
+                "printflag"  => $print_flag
             ],
             $routing_key ?: $this->routing_key
         );
