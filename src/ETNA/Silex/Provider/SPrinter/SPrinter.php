@@ -18,15 +18,16 @@ class SPrinter
         return $this->routing_key;
     }
 
-    public function sendPrint($template, $data, $print_flag, $routing_key = null)
+    public function sendPrint($template, $data, $print_flag, $routing_key = null, $opt = null)
     {
-        $this->exchange->send(
-            [
-                "template"   => $template,
-                "data"       => $data,
-                "printflag"  => $print_flag
-            ],
-            $routing_key ?: $this->routing_key
-        );
+        $params = [
+            "template"   => $template,
+            "data"       => $data,
+            "printflag"  => $print_flag
+        ];
+        if ($opt) {
+            $params = array_merge($params, $opt);
+        }
+        $this->exchange->send($params, $routing_key ?: $this->routing_key);
     }
 }
