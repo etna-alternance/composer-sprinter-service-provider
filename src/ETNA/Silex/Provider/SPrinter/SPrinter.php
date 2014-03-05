@@ -2,6 +2,7 @@
 
 namespace ETNA\Silex\Provider\SPrinter;
 
+use ETNA\Silex\Provider\RabbitMQ\Queue;
 /**
  *
  */
@@ -28,6 +29,10 @@ class SPrinter
         if ($opt) {
             $params = array_merge($params, $opt);
         }
+
+        // crée la queue au besoin
+        $queue = new Queue($routing_key, $this->exchange, $this->exchange->getChannel(), $opt);
+        
         $this->exchange->send($params, $routing_key ?: $this->routing_key);
     }
 }
