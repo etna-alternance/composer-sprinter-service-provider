@@ -21,6 +21,12 @@ class SPrinter
 
     public function sendPrint($template, $data, $print_flag, $routing_key = null, $opt = null)
     {
+        $queue_opt = [
+            "passive"     => false,
+            "durable"     => true,
+            "exclusive"   => false,
+            "auto_delete" => false,
+        ];
         $params = [
             "template"   => $template,
             "data"       => $data,
@@ -31,8 +37,8 @@ class SPrinter
         }
 
         // crée la queue au besoin
-        $queue = new Queue($routing_key, $this->exchange, $this->exchange->getChannel(), $opt);
-        
+        $queue = new Queue($routing_key, $this->exchange, $this->exchange->getChannel(), $queue_opt);
+
         $this->exchange->send($params, $routing_key ?: $this->routing_key);
     }
 }
