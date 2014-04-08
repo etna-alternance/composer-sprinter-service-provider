@@ -36,9 +36,11 @@ class SPrinter
             $params = array_merge($params, $opt);
         }
 
+        $routing_key = $routing_key ?: $this->routing_key;
+
         // crée la queue au besoin
         $queue = new Queue($routing_key, $this->exchange, $this->exchange->getChannel(), $queue_opt);
 
-        $this->exchange->send($params, $routing_key ?: $this->routing_key);
+        $this->exchange->send($params, $routing_key);
     }
 }
