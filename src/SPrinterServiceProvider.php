@@ -3,18 +3,15 @@
 namespace ETNA\Silex\Provider\SPrinter;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
+use Pimple\Container;
 
 /**
  *
  */
 class SPrinterServiceProvider implements ServiceProviderInterface
 {
-    public function boot(Application $app)
-    {
-    }
-
-    public function register(Application $app)
+    public function register(Container $app)
     {
         if (!isset($app["sprinter.options"]) || !isset($app["sprinter.options"]["default.routing_key"])) {
             $environment_key = "{$app["application_name"]}_SPRINTER_ROUTING_KEY";
