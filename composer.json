@@ -13,7 +13,7 @@
     "require": {
         "php": ">=5.5",
         "silex/silex": "~2.0@dev",
-        "etna/rabbitmq-service-provider": "0.x"
+        "etna/rabbitmq-service-provider": "2.x-dev"
     },
     "config": {
         "bin-dir": "bin"

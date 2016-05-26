@@ -2,16 +2,30 @@
 
 namespace ETNA\Silex\Provider\SPrinter;
 
-use ETNA\Silex\Provider\RabbitMQ\Queue;
+use OldSound\RabbitMqBundle\RabbitMq\Producer;
+use Silex\Application;
+
 /**
  *
  */
 class SPrinter
 {
-    public function __construct($exchange, $options)
+    public function __construct($app)
     {
-        $this->exchange     = $exchange;
-        $this->routing_key  = $options["default.routing_key"];
+        // On crée un producer pour publier des jobs
+        $connection = $app['rabbit.connections']['default'];
+        $producer   = new Producer($connection);
+        $producer->setExchangeOptions([
+            "name"        => "SPrinter",
+            "channel"     => "default",
+            "type"        => "direct",
+            "passive"     => false,
+            "durable"     => true,
+            "auto_delete" => false,
+        ]);
+
+        $this->producer    = $producer;
+        $this->routing_key = $app["sprinter.options"]["default.routing_key"];
     }
 
     public function getDefaultRoutingKey()
@@ -19,28 +33,24 @@ class SPrinter
         return $this->routing_key;
     }
 
+    public function getProducer()
+    {
+        return $this->producer;
+    }
+
     public function sendPrint($template, $data, $print_flag, $routing_key = null, $opt = null)
     {
-        $queue_opt = [
-            "passive"     => false,
-            "durable"     => true,
-            "exclusive"   => false,
-            "auto_delete" => false,
-        ];
-        $params = [
+        $print_params = [
             "template"   => $template,
             "data"       => $data,
             "printflag"  => $print_flag
         ];
         if ($opt) {
-            $params = array_merge($params, $opt);
+            $print_params = array_merge($print_params, $opt);
         }
 
         $routing_key = $routing_key ?: $this->routing_key;
 
-        // crée la queue au besoin
-        $queue = new Queue($routing_key, $this->exchange, $this->exchange->getChannel(), $queue_opt);
-
-        $this->exchange->send($params, $routing_key);
+        $this->producer->publish($print_params, $routing_key);
     }
 }
