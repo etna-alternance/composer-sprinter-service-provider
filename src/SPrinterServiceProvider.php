@@ -25,9 +25,9 @@ class SPrinterServiceProvider implements ServiceProviderInterface
             ];
         }
 
-        // On vérifie que la connection rmq est bien settée
-        if (false === isset($app['rabbit.connections']) || false === isset($app['rabbit.connections']['default'])) {
-            throw new \Exception("RabbitMQ default connection not set");
+        // On vérifie que le producer rabbitmq est bien créé
+        if (false === isset($app['rabbit.producer']) || false === isset($app['rabbit.producer']['sprinter'])) {
+            throw new \Exception("RabbitMQ producer 'sprinter' is not defined");
         }
 
         $app["sprinter"] = function ($app) {
