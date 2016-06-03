@@ -23,3 +23,19 @@ Modifier `composer.json` :
    ]
 }
 ```
+
+Configuration
+-------------
+
+Créer le producer rabbitmq :
+
+```
+$app['rmq_producers'] = array_merge($app['rmq_producers'], SPrinter::getProducerConfig());
+```
+
+Attention, le provider Sprinter doit être register après le provider RabbitMQ :
+
+```
+$app->register(new RabbitConfig($this->rabbitmq_config));
+$app->register(new SPrinterServiceProvider());
+```
