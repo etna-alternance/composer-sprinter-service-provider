@@ -26,7 +26,7 @@ class SPrinterServiceProvider implements ServiceProviderInterface
         }
 
         // On vérifie que le producer rabbitmq est bien créé
-        if (false === isset($app['rabbit.producer']) || false === isset($app['rabbit.producer']['sprinter'])) {
+        if (false === isset($app['rabbit.producers']) || false === isset($app['rabbit.producers']['sprinter'])) {
             throw new \Exception("RabbitMQ producer 'sprinter' is not defined");
         }
 
