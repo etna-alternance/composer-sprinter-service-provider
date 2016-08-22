@@ -26,7 +26,7 @@ class SPrinter
         $print_params = [
             "template"   => $template,
             "data"       => $data,
-            "printflag"  => $print_flag
+            "printFlag"  => $print_flag
         ];
         if ($opt) {
             $print_params = array_merge($print_params, $opt);
