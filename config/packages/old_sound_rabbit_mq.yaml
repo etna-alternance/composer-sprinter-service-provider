@@ -1,0 +1,9 @@
+connections:
+    default:
+        url: '%env(RABBITMQ_URL)%'
+        vhost: '%env(RABBITMQ_VHOST)%'
+producers:
+    # use 'old_sound_rabbit_mq.sprinter_producer' service to send data.
+    SPrinter:
+        connection:       default
+        exchange_options: { name: 'SPrinter', type: direct, passive: false, durable: true, auto_delete: false }
