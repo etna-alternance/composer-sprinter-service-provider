@@ -1,4 +1,0 @@
-default:
-  routing_key: sprinter.lefran_f
-# On a pas forcément besoin d'un fichier sprinter.yaml
-# dans le bundle parent...
