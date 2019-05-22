@@ -1,7 +1,6 @@
 <?php
 /**
  * PHP version 7.1
- *
  * @author BLU <dev@etna-alternance.net>
  */
 
@@ -9,12 +8,12 @@ declare(strict_types=1);
 
 namespace ETNA\Sprinter\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * On définit cette classe pour personnaliser le processus de parsing de la configuration de notre bundle.
@@ -33,7 +32,7 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
      *
      * @param ContainerBuilder $container Le container du bundle parent
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $rmq_conf = [
             'producers' => [
@@ -81,8 +80,8 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
      * @param array            $configs   Les éventuels paramètres
      * @param ContainerBuilder $container Le container de la configuration
      */
-	public function load(array $configs, ContainerBuilder $container): void
-	{
+    public function load(array $configs, ContainerBuilder $container): void
+    {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $container->setParameter("sprinter.default.routing_key", $config["default"]["routing_key"]);
 		$loader = new YamlFileLoader(

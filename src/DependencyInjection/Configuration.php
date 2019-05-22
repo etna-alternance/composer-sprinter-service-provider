@@ -1,7 +1,6 @@
 <?php
 /**
  * PHP version 7.1
- *
  * @author BLU <dev@etna-alternance.net>
  */
 
@@ -22,7 +21,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *        default:
  *            routing_key: lefran_f
  * </pre>
- *
  */
 class Configuration implements ConfigurationInterface
 {

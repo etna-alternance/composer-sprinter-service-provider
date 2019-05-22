@@ -1,7 +1,6 @@
 bin/
 tmp/
 vendor/
-composer.lock
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -10,11 +9,6 @@ composer.lock
 /public/bundles/
 /var/
 /vendor/
-###< symfony/framework-bundle ###
-
-###> behat/symfony2-extension ###
-behat.yml
-###< behat/symfony2-extension ###
 
 ###> phpunit/phpunit ###
 /phpunit.xml

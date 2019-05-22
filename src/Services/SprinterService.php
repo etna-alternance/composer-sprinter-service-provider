@@ -1,7 +1,6 @@
 <?php
 /**
  * PHP version 7.1
- *
  * @author BLU <dev@etna-alternance.net>
  */
 
@@ -9,20 +8,24 @@ declare(strict_types=1);
 
 namespace ETNA\Sprinter\Services;
 
+use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * La classe Sprinter est le service déclaré dans config/service.yaml
- * Cette classe accède au container du projet et stocke le producer rabbitMQ et la routing_key
+ * Cette classe accède au container du projet et stocke le producer rabbitMQ et la routing_key.
  */
 class SprinterService
 {
-    /** @var ContainerInterface Conteneur de l'application symfony ou sont référencés les paramètres */
+    /** @var ContainerInterface
+     *  Conteneur de l'application symfony ou sont référencés les paramètres */
     private $container;
 
-    /** @var Producer décrit un producer rabbitMQ, un producer permet de publier sur une queue **/
+    /** @var ProducerInterface
+     * décrit un producer rabbitMQ, un producer permet de publier sur une queue */
     private $producer;
 
-    /** @var string décrit le nom du channel par défaut **/
+    /** @var string décrit le nom du channel par défaut * */
     private $routing_key;
 
     /**
@@ -34,7 +37,7 @@ class SprinterService
     {
         $this->container   = $container;
         $this->producer    = $container->get('old_sound_rabbit_mq.SPrinter_producer');
-        $this->routing_key = $container->getParameter("sprinter.default.routing_key");
+        $this->routing_key = $container->getParameter('sprinter.default.routing_key');
     }
 
     /**
@@ -68,37 +71,43 @@ class SprinterService
         $print_flag,
         $routing_key = null,
         // student or contract, entities
-        array $sprinter_data,
-        // exemple: ['printFlag' => $paper]
+        array $sprinter_data = [],
+        // exemple: ["printFlag" => $paper]
         array $sprinter_opt = []
     ) {
-        if (!is_array($sprinter_data) || empty($sprinter_data)) {
-            throw new \Exception("Bad data provided for printing", 400);
+        if (!\is_array($sprinter_data) || empty($sprinter_data)) {
+            throw new \Exception('Bad data provided for printing', 400);
         }
         $template_b64 = base64_encode($template);
-        $csv          = $this->arrayToCsv($sprinter_data, $sprinter_opt["csv_rows"]);
+        $csv          = $this->arrayToCsv($sprinter_data, $sprinter_opt['csv_rows']);
         $csv_base64   = base64_encode($csv);
         $template     = [
-            "Name"    => $template_title,
-            "Content" => $template_b64,
+            'Name'    => $template_title,
+            'Content' => $template_b64,
         ];
         $data         = [
-            "Name"    => "data.csv",
-            "Content" => $csv_base64,
+            'Name'    => 'data.csv',
+            'Content' => $csv_base64,
         ];
         $queue_opt    = [
-            "passive"     => false,
-            "durable"     => true,
-            "exclusive"   => false,
-            "auto_delete" => false,
+            'passive'     => false,
+            'durable'     => true,
+            'exclusive'   => false,
+            'auto_delete' => false,
         ];
         $params       = [
-            "template"   => $template,
-            "data"       => $data,
-            "printflag"  => $print_flag
+            'template'   => $template,
+            'data'       => $data,
+            'printflag'  => $print_flag,
         ];
-        if ($queue_opt) {
-            $params = array_merge($params, $queue_opt);
+        $queue_and_params = array_merge($params, $queue_opt);
+        $routing_key      = $routing_key ?: $this->routing_key;
+        $msgBody          = json_encode($queue_and_params);
+        if (false === $msgBody) {
+            throw new \Exception(
+                'Encoding message to producer failed',
+                500
+            );
         }
         $routing_key = $routing_key ?: $this->routing_key;
         $this->producer->publish(json_encode($params), $routing_key);
@@ -112,8 +121,8 @@ class SprinterService
      *
      * Prends un tableau PHP et en génère un csv
      *
-     * @param  array    $array     Array a transformer
-     * @param  int|null &$csv_rows Nombre de rows générées
+     * @param array    $array    Array a transformer
+     * @param int|null $csv_rows Nombre de rows générées
      *
      * @return string
      */
@@ -121,20 +130,24 @@ class SprinterService
     {
         if (true === empty($array)) {
             $csv_rows = 0;
-            return "";
+
+            return '';
         }
         $headers = array_keys($array[0]);
         $tokens  = array_values($array);
         $csv     = self::sputcsv($headers, ';', '"', "\n");
         foreach ($tokens as $value) {
             if (!empty(array_diff(array_keys($value), $headers))) {
-                throw new \Exception("Bad csv", 400);
+                throw new \Exception('Bad csv', 400);
             }
-            $clean_array = str_replace("\n", " ", array_values($value));
-            $csv        .= self::sputcsv($clean_array, ';', '"', "\n");
+            $clean_array = str_replace("\n", ' ', array_values($value));
+            $csv .= self::sputcsv($clean_array, ';', '"', "\n");
         }
-        $csv      = substr_replace($csv, "", -1);
-        $csv_rows = count($tokens);
+        if (false === $csv) {
+            throw new \Exception('Convert string to csv failed', 500);
+        }
+        $csv      = substr_replace($csv, '', -1);
+        $csv_rows = \count($tokens);
 
         return $csv;
     }
@@ -166,9 +179,11 @@ class SprinterService
             return false;
         }
         rewind($file_pointer);
-        $csv = fgets($file_pointer);
+        if (false === ($csv = fgets($file_pointer))) {
+            return false;
+        }
         if (PHP_EOL !== $eol) {
-            $csv = substr($csv, 0, (0 - strlen(PHP_EOL))) . $eol;
+            $csv = substr($csv, 0, (0 - \strlen(PHP_EOL))) . $eol;
         }
 
         return $csv;
