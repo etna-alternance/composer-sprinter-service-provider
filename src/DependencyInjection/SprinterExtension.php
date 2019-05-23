@@ -28,7 +28,7 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
     /**
      * Implémentation de l'interface PrependExtensionInterface
      * Cette fonction permet d'intervenir sur les fichiers de configuration
-     * du dossier config/packages/*.yaml du bundle parent
+     * du dossier config/packages/*.yaml du bundle parent.
      *
      * @param ContainerBuilder $container Le container du bundle parent
      */
@@ -43,10 +43,10 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
                         'type'        => 'direct',
                         'passive'     => false,
                         'durable'     => true,
-                        'auto_delete' => false
-                    ]
-                ]
-            ]
+                        'auto_delete' => false,
+                    ],
+                ],
+            ],
         ];
 
         $rmq_current_config = $container->getExtensionConfig('old_sound_rabbit_mq');
@@ -56,14 +56,14 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
             $rmq_conf['connections'] = [
                 'default' => [
                     'url'   => '%env(RABBITMQ_URL)%',
-                    'vhost' => '%env(RABBITMQ_VHOST)%'
-                ]
+                    'vhost' => '%env(RABBITMQ_VHOST)%',
+                ],
             ];
         }
 
         $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles["OldSoundRabbitMqBundle"])) {
-            throw new \Exception("Error Processing Request", 1);
+        if (!isset($bundles['OldSoundRabbitMqBundle'])) {
+            throw new \Exception('Error Processing Request', 1);
         }
         $container->prependExtensionConfig('old_sound_rabbit_mq', $rmq_conf);
     }
@@ -83,11 +83,11 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $container->setParameter("sprinter.default.routing_key", $config["default"]["routing_key"]);
-		$loader = new YamlFileLoader(
-			$container,
-			new FileLocator(__DIR__ . '/../Resources/config')
-		);
-		$loader->load('services.yaml');
-	}
+        $container->setParameter('sprinter.default.routing_key', $config['default']['routing_key']);
+        $loader = new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config')
+        );
+        $loader->load('services.yaml');
+    }
 }

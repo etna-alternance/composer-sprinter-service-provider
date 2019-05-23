@@ -41,7 +41,7 @@ class SprinterService
     }
 
     /**
-     * Getter sur routing_key
+     * Getter sur routing_key.
      *
      * @return string
      */
@@ -53,14 +53,14 @@ class SprinterService
     /**
      * sendPrint est la fonction principale du service.
      * Elle compose un groupe de paramètres nécessaires à une impression
-     * sur Sprinter et publie ces paramètres sur le producer Sprinter de rabbitMQ
+     * sur Sprinter et publie ces paramètres sur le producer Sprinter de rabbitMQ.
      *
-     * @param  string  $template_title le nom du fichier template
-     * @param  string  $template       le contenu du template extrait avec file_get_content
-     * @param  boolean $print_flag     paramètre permettant de déterminer si l'on souhaite une impression papier
-     * @param  string  $routing_key    la routing_key sur laquelle la publication doit avoir lieu
-     * @param  array   $sprinter_data  l'entité servant à la composition des tokens
-     * @param  array   $sprinter_opt   les options de l'impression
+     * @param string $template_title le nom du fichier template
+     * @param string $template       le contenu du template extrait avec file_get_content
+     * @param bool   $print_flag     paramètre permettant de déterminer si l'on souhaite une impression papier
+     * @param string $routing_key    la routing_key sur laquelle la publication doit avoir lieu
+     * @param array  $sprinter_data  l'entité servant à la composition des tokens
+     * @param array  $sprinter_opt   les options de l'impression
      *
      * @return string
      */
