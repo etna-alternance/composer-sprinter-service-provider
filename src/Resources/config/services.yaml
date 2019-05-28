@@ -2,6 +2,6 @@ services:
     sprinter.sprinter_service:
         class: 'ETNA\Sprinter\Services\SprinterService'
         autowire: true
-        public: false
+        public: true
 
     ETNA\Sprinter\Services\SprinterService: '@sprinter.sprinter_service'

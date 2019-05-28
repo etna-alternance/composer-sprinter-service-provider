@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace ETNA\Sprinter\Services;
 
-use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,7 +20,7 @@ class SprinterService
      *  Conteneur de l'application symfony ou sont référencés les paramètres */
     private $container;
 
-    /** @var ProducerInterface
+    /**
      * décrit un producer rabbitMQ, un producer permet de publier sur une queue */
     private $producer;
 
@@ -179,9 +178,11 @@ class SprinterService
             return false;
         }
         rewind($file_pointer);
+
         if (false === ($csv = fgets($file_pointer))) {
             return false;
         }
+        $csv = (string) $csv;
         if (PHP_EOL !== $eol) {
             $csv = substr($csv, 0, (0 - \strlen(PHP_EOL))) . $eol;
         }
