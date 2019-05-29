@@ -25,9 +25,11 @@ class FeatureContext extends BaseContext
      * @Given je veux récupérer la routing_key par defaut
      */
     public function jeVeuxRecupererLaRoutingKeyParDefaut() {
+        $container = $this->getKernel()->getContainer();
+
         $this->getContext("ETNA\FeatureContext\ExceptionContainerContext")->try(
-            function (Sprinter $sprinter) {
-                $sprinter->getDefaultRoutingKey();
+            function () use ($container) {
+                $container->get('sprinter.sprinter_service');
             }
         );
     }
