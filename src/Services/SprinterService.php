@@ -127,6 +127,8 @@ class SprinterService
      */
     private function arrayToCsv(array $array, int &$csv_rows = null)
     {
+        // impossible que $array soit vide, la méthode est privée
+        // et la l.77 vérifie déjà que les data sont correctes
         if (true === empty($array)) {
             $csv_rows = 0;
 

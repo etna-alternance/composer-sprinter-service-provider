@@ -14,7 +14,7 @@ default:
         - '%paths.base%/features/suites'
       contexts:
         - FeatureContext:
-            kernel: '@kernel'
+        - ETNA\FeatureContext\ApiContext
         - ETNA\FeatureContext\ExceptionContainerContext
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
@@ -40,7 +40,7 @@ ci:
                 - tmp
                 - Tests
         - FeatureContext:
-            kernel: '@kernel'
+        - ETNA\FeatureContext\ApiContext
         - ETNA\FeatureContext\ExceptionContainerContext
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
