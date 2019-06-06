@@ -15,6 +15,7 @@ default:
       contexts:
         - FeatureContext:
         - ETNA\FeatureContext\ApiContext
+        - ETNA\FeatureContext\RabbitContext
         - ETNA\FeatureContext\ExceptionContainerContext
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
@@ -41,6 +42,7 @@ ci:
                 - Tests
         - FeatureContext:
         - ETNA\FeatureContext\ApiContext
+        - ETNA\FeatureContext\RabbitContext
         - ETNA\FeatureContext\ExceptionContainerContext
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
