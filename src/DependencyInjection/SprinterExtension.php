@@ -63,7 +63,7 @@ class SprinterExtension extends Extension implements PrependExtensionInterface
 
         $bundles = $container->getParameter('kernel.bundles');
         if (!isset($bundles['OldSoundRabbitMqBundle'])) {
-            throw new \Exception('Error Processing Request', 1);
+            throw new \Exception('RabbitMQ bundle is missing', 1);
         }
         $container->prependExtensionConfig('old_sound_rabbit_mq', $rmq_conf);
     }

@@ -1,8 +1,5 @@
 <?php
 
-use Symfony\Component\Console\Tester\CommandTester;
-use ETNA\Sprinter\Services\SprinterService;
-
 use ETNA\FeatureContext\BaseContext;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -49,41 +46,35 @@ class FeatureContext extends BaseContext
         $container = $this->getKernel()->getContainer();
         $path      = $this->requests_path . "/templates";
         $uploaded  = new UploadedFile($path . "/" . $template, $template);
-        $file      = file_get_contents($uploaded);
+        $file      = base64_encode(file_get_contents($uploaded));
         $path_to_student = "$this->requests_path/$student_array";
         $student   = include $path_to_student;
         $this->getContext("ETNA\FeatureContext\ExceptionContainerContext")->try(
             function () use ($container, $template, $file, $student) {
                 $sprinter = $container->get('sprinter.sprinter_service');
                 $routing_key = $sprinter->getDefaultRoutingKey();
-                $sprinter->sendPrint($template, $file, $routing_key, false, $student);
+                $sprinter->sendPrint($template, $file, false, $routing_key, $student);
             }
         );
     }
 
     /**
-     * @Given /le producer "([^"]*)" devrait avoir publié un message dans la queue de la routing_key par defaut$/
+     * @Given je veux envoyer le template :template avec le student :student et un print_flag moisi
      */
-    public function leProducerDevraitAvoirPublieUnMessageDansLaQueueDeLaRoutingKeyParDefaut($producer)
-    {
-        $this->fetchMessage(
-            $producer,
-            $this->getContainer()->getParameter('sprinter.default.routing_key')
+    public function jsVeuxEnvoyerLeTemplateAvecLeStudentEtUnPrintFlagMoisi($template, $student_array) {
+        $container = $this->getKernel()->getContainer();
+        $path      = $this->requests_path . "/templates";
+        $uploaded  = new UploadedFile($path . "/" . $template, $template);
+        $file      = base64_encode(file_get_contents($uploaded));
+        $path_to_student = "$this->requests_path/$student_array";
+        $student   = include $path_to_student;
+        $this->getContext("ETNA\FeatureContext\ExceptionContainerContext")->try(
+            function () use ($container, $template, $file, $student) {
+                $sprinter = $container->get('sprinter.sprinter_service');
+                $routing_key = $sprinter->getDefaultRoutingKey();
+                $sprinter->sendPrint($template, $file, "\xB1\x31", $routing_key, $student);
+            }
         );
-    }
-
-    // Méthode présente dans le RabbitMQ context
-    private function fetchMessage($producer, $queue)
-    {
-        $channel = $this->getContainer()->get("old_sound_rabbit_mq.{$producer}_producer")->getChannel();
-        $message = $channel->basic_get($queue, true);
-        $channel->close();
-
-        if (null === $message) {
-            throw new \Exception("Queue {$queue} is empty");
-        }
-
-        return $message->body;
     }
 }
 
