@@ -42,7 +42,7 @@ class FeatureContext extends BaseContext
     /**
      * @Given je veux envoyer le template :template avec le student :student
      */
-    public function jsVeuxEnvoyerLeTemplateAvecLeStudent($template, $student_array) {
+    public function jeVeuxEnvoyerLeTemplateAvecLeStudent($template, $student_array) {
         $container = $this->getKernel()->getContainer();
         $path      = $this->requests_path . "/templates";
         $uploaded  = new UploadedFile($path . "/" . $template, $template);
@@ -61,7 +61,7 @@ class FeatureContext extends BaseContext
     /**
      * @Given je veux envoyer le template :template avec le student :student et un print_flag moisi
      */
-    public function jsVeuxEnvoyerLeTemplateAvecLeStudentEtUnPrintFlagMoisi($template, $student_array) {
+    public function jeVeuxEnvoyerLeTemplateAvecLeStudentEtUnPrintFlagMoisi($template, $student_array) {
         $container = $this->getKernel()->getContainer();
         $path      = $this->requests_path . "/templates";
         $uploaded  = new UploadedFile($path . "/" . $template, $template);

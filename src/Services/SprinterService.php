@@ -69,7 +69,9 @@ class SprinterService
         $print_flag,
         $routing_key = null,
         // string on csv format
-        $sprinter_data = ''
+        $sprinter_data = '',
+        // un array d'options laissé libre
+        $sprinter_opts = []
     ) {
         if (!\is_string($sprinter_data) || empty($sprinter_data)) {
             throw new \Exception('Bad data provided for printing', 400);
@@ -88,6 +90,7 @@ class SprinterService
             'template'   => $template,
             'data'       => $data,
             'printflag'  => $print_flag,
+            'opts'       => $sprinter_opts,
         ];
         $routing_key      = $routing_key ?: $this->routing_key;
         $msgBody          = json_encode($params);
@@ -98,7 +101,7 @@ class SprinterService
             );
         }
         $routing_key = $routing_key ?: $this->routing_key;
-        $this->producer->publish(json_encode($params), $routing_key);
+        $this->producer->publish($msgBody, $routing_key);
 
         return $routing_key;
     }
