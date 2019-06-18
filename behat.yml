@@ -20,6 +20,7 @@ default:
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
               - '\ETNA\Sprinter\SprinterBundle'
+              - '\OldSound\RabbitMqBundle\OldSoundRabbitMqBundle'
   extensions:
     Behat\Symfony2Extension:
       kernel:
@@ -47,6 +48,7 @@ ci:
         - ETNA\FeatureContext\SymfonyTestKernelContext:
             bundles:
               - '\ETNA\Sprinter\SprinterBundle'
+              - '\OldSound\RabbitMqBundle\OldSoundRabbitMqBundle'
   extensions:
     Behat\Symfony2Extension:
       kernel:
