@@ -53,7 +53,8 @@ class FeatureContext extends BaseContext
             function () use ($container, $template, $file, $student) {
                 $sprinter = $container->get('sprinter.sprinter_service');
                 $routing_key = $sprinter->getDefaultRoutingKey();
-                $sprinter->sendPrint($template, $file, false, $routing_key, $student);
+                $opts        = ["to test opts add" => "we put any shit on it"];
+                $sprinter->sendPrint($template, $file, false, $routing_key, $student, $opts);
             }
         );
     }
@@ -70,9 +71,10 @@ class FeatureContext extends BaseContext
         $student   = include $path_to_student;
         $this->getContext("ETNA\FeatureContext\ExceptionContainerContext")->try(
             function () use ($container, $template, $file, $student) {
-                $sprinter = $container->get('sprinter.sprinter_service');
+                $sprinter    = $container->get('sprinter.sprinter_service');
                 $routing_key = $sprinter->getDefaultRoutingKey();
-                $sprinter->sendPrint($template, $file, "\xB1\x31", $routing_key, $student);
+                $opts        = ["to test opts add" => "we put any shit on it"];
+                $sprinter->sendPrint($template, $file, "\xB1\x31", $routing_key, $student, $opts);
             }
         );
     }

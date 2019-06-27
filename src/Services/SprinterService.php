@@ -90,10 +90,12 @@ class SprinterService
             'template'   => $template,
             'data'       => $data,
             'printflag'  => $print_flag,
-            'opts'       => $sprinter_opts,
         ];
-        $routing_key      = $routing_key ?: $this->routing_key;
-        $msgBody          = json_encode($params);
+        if (!empty($sprinter_opts)) {
+            $params = array_merge($params, $sprinter_opts);
+        }
+        $routing_key = $routing_key ?: $this->routing_key;
+        $msgBody     = json_encode($params);
         if (false === $msgBody) {
             throw new \Exception(
                 'Encoding message to producer failed',
