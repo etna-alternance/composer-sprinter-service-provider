@@ -1,0 +1,7 @@
+framework:
+    secret: 'toto'
+
+    php_errors:
+        log: true
+
+    test: true

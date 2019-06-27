@@ -1,0 +1,8 @@
+{
+    "phpstan/phpstan-symfony": {
+        "version": "0.11.2"
+    },
+    "symfony/dotenv": {
+        "version": "v4.2.4"
+    }
+}

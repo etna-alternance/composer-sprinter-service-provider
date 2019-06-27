@@ -1,7 +1,8 @@
 {
     "name": "etna/sprinter-service-provider",
-    "description": "SPrinter Service Provider",
-    "keywords": ["sprinter", "rabbitmq", "silex"],
+    "description": "Sprinter Service Provider",
+    "type": "symfony-bundle",
+    "keywords": ["sprinter", "silex"],
     "license": "proprietary",
     "authors": [
         {
@@ -11,27 +12,55 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "silex/silex": "1.x",
-        "etna/rabbitmq-service-provider": "0.x"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "php": "^7.1.3",
+        "symfony/framework-bundle": "^4.1",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
+        "symfony/yaml": "^4.1",
+        "symfony/flex": "^1.1",
+        "symfony/dotenv": "4.2.*"
     },
     "autoload": {
         "psr-4": {
-            "ETNA\\Silex\\Provider\\SPrinter\\": "src"
+            "ETNA\\Sprinter\\": "src/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
+    "autoload-dev": {
+        "psr-4": {
+            "TestApp\\": "TestApp/app/"
         }
     },
     "repositories": [
-       {
-           "type": "composer",
-           "url": "http://blu-composer.herokuapp.com/"
-       }
-   ]
+        {
+            "type": "composer",
+            "url": "https://blu-composer.herokuapp.com"
+        }
+    ],
+    "scripts": {
+        "test": "behat",
+        "behat": "behat",
+        "phing": "phing",
+        "coveralls": "php-coveralls",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
+    },
+    "require-dev": {
+        "behat/behat": "^3.4",
+        "behat/symfony2-extension": "^2.1",
+        "etna/composer-behat-utils": "^3.1.0",
+        "phpunit/php-code-coverage": "^6.0",
+        "phpunit/phpcov": "^5.0",
+        "phploc/phploc": "^4.0",
+        "squizlabs/php_codesniffer": "^3.3",
+        "friendsofphp/php-cs-fixer": "^2.12",
+        "sebastian/phpcpd": "^4.0",
+        "phpmd/phpmd": "^2.6",
+        "phing/phing": "^2.16",
+        "php-coveralls/php-coveralls": "^2.1",
+        "scrutinizer/ocular": "^1.5",
+        "phpstan/phpstan": "^0.10.8",
+        "povils/phpmnd": "^2.0",
+        "phpmetrics/phpmetrics": "^2.4"
+    }
 }

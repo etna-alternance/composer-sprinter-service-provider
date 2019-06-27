@@ -1,0 +1,55 @@
+default:
+  formatters:
+    progress:
+        decorated:           true
+        verbose:             true
+        time:                true
+        language:            fr
+        output_path:         null
+        multiline_arguments: true
+
+  suites:
+    default:
+      paths:
+        - '%paths.base%/features/suites'
+      contexts:
+        - FeatureContext:
+        - ETNA\FeatureContext\ApiContext
+        - ETNA\FeatureContext\RabbitContext
+        - ETNA\FeatureContext\ExceptionContainerContext
+        - ETNA\FeatureContext\SymfonyTestKernelContext:
+            bundles:
+              - '\ETNA\Sprinter\SprinterBundle'
+              - '\OldSound\RabbitMqBundle\OldSoundRabbitMqBundle'
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        class: TestApp\Kernel
+
+ci:
+  suites:
+    default:
+      paths:
+        - '%paths.base%/features/suites'
+      contexts:
+        - ETNA\FeatureContext\CoverageContext:
+            coverage_path: /tmp/behat/coverage
+            whitelist:
+                - src
+            blacklist:
+                - vendor
+                - bin
+                - tmp
+                - Tests
+        - FeatureContext:
+        - ETNA\FeatureContext\ApiContext
+        - ETNA\FeatureContext\RabbitContext
+        - ETNA\FeatureContext\ExceptionContainerContext
+        - ETNA\FeatureContext\SymfonyTestKernelContext:
+            bundles:
+              - '\ETNA\Sprinter\SprinterBundle'
+              - '\OldSound\RabbitMqBundle\OldSoundRabbitMqBundle'
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        class: TestApp\Kernel
